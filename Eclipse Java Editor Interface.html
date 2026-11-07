@@ -1,0 +1,1732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>workspace - Java_Lab/src/Java_Lab/DisplayFiles.java - Eclipse IDE</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      user-select: text;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-size: 12px;
+      background-color: #f0f0f0;
+      color: #000000;
+      overflow: hidden;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Classic Eclipse Scrollbars */
+    ::-webkit-scrollbar {
+      width: 14px;
+      height: 14px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #f0f0f0;
+      border-left: 1px solid #d4d4d4;
+      border-top: 1px solid #d4d4d4;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #cdcdcd;
+      border: 2px solid #f0f0f0;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #a6a6a6;
+    }
+
+    /* Top Menu Bar */
+    .eclipse-menubar {
+      background: #f0f0f0;
+      border-bottom: 1px solid #d0d0d0;
+      height: 22px;
+      display: flex;
+      align-items: center;
+      padding: 0 6px;
+      font-size: 12px;
+      user-select: none;
+    }
+    .eclipse-menubar span {
+      padding: 2px 7px;
+      cursor: default;
+    }
+    .eclipse-menubar span:hover {
+      background-color: #e5f3ff;
+      outline: 1px solid #cce8ff;
+    }
+
+    /* Toolbar */
+    .eclipse-toolbar {
+      background: linear-gradient(to bottom, #f7f7f7, #ebebeb);
+      border-bottom: 1px solid #c0c0c0;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      padding: 0 8px;
+      gap: 4px;
+      user-select: none;
+    }
+    .tool-btn {
+      width: 22px;
+      height: 22px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid transparent;
+      border-radius: 2px;
+      cursor: pointer;
+    }
+    .tool-btn:hover {
+      border-color: #a0c5e8;
+      background-color: #e2effa;
+    }
+    .tool-sep {
+      width: 1px;
+      height: 16px;
+      background: #c8c8c8;
+      margin: 0 3px;
+    }
+
+    /* Workbench Layout */
+    .workbench {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+      background: #e1e1e1;
+      padding: 2px;
+      gap: 3px;
+    }
+
+    /* Package Explorer Sidebar */
+    .sidebar {
+      width: 240px;
+      background: #ffffff;
+      border: 1px solid #a0a0a0;
+      display: flex;
+      flex-direction: column;
+      user-select: none;
+      flex-shrink: 0;
+    }
+    .sidebar.hidden-pane {
+      display: none;
+    }
+
+    /* Eclipse Part Tab Header */
+    .part-tabbar {
+      height: 25px;
+      background: linear-gradient(to bottom, #e8eef4, #d6e0ea);
+      border-bottom: 1px solid #a0a0a0;
+      display: flex;
+      align-items: flex-end;
+      padding-left: 4px;
+      justify-content: space-between;
+      user-select: none;
+    }
+    .part-tab {
+      background: #ffffff;
+      border-top: 1px solid #a0a0a0;
+      border-left: 1px solid #a0a0a0;
+      border-right: 1px solid #a0a0a0;
+      border-top-left-radius: 3px;
+      border-top-right-radius: 3px;
+      height: 22px;
+      padding: 0 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11.5px;
+      color: #000;
+      position: relative;
+      top: 1px;
+      cursor: default;
+    }
+
+    /* Tree Items */
+    .tree-container {
+      padding: 4px;
+      overflow-y: auto;
+      flex: 1;
+      font-size: 12px;
+    }
+    .tree-row {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 4px;
+      cursor: pointer;
+      white-space: nowrap;
+      border: 1px solid transparent;
+    }
+    .tree-row:hover {
+      background-color: #f2f7fd;
+      border-color: #d8e6f6;
+    }
+    .tree-row.selected {
+      background-color: #cce8ff;
+      border-color: #99d1ff;
+    }
+
+    /* Editor Stack */
+    .editor-stack {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      gap: 3px;
+    }
+
+    .editor-pane {
+      flex: 1;
+      background: #ffffff;
+      border: 1px solid #a0a0a0;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    /* Editor File Tabs */
+    .editor-tabs {
+      height: 26px;
+      background: linear-gradient(to bottom, #e4eaf1, #cfd9e4);
+      border-bottom: 1px solid #a0a0a0;
+      display: flex;
+      align-items: flex-end;
+      padding-left: 3px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      user-select: none;
+    }
+    .editor-tabs::-webkit-scrollbar {
+      height: 0px;
+    }
+    .file-tab {
+      height: 23px;
+      padding: 0 7px 0 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11.5px;
+      border-top: 1px solid #96a5b4;
+      border-right: 1px solid #96a5b4;
+      border-left: 1px solid #96a5b4;
+      margin-right: 1px;
+      border-top-left-radius: 3px;
+      border-top-right-radius: 3px;
+      background: linear-gradient(to bottom, #f2f5f9, #dce4ed);
+      color: #333;
+      cursor: pointer;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .file-tab:hover {
+      background: linear-gradient(to bottom, #fafcfe, #e7eef6);
+    }
+    .file-tab.active {
+      background: #ffffff;
+      color: #000000;
+      font-weight: 500;
+      height: 24px;
+      position: relative;
+      top: 1px;
+      border-bottom: 1px solid #ffffff;
+    }
+    .tab-close {
+      font-size: 11px;
+      line-height: 1;
+      width: 14px;
+      height: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 2px;
+      color: #666;
+      margin-left: 2px;
+    }
+    .tab-close:hover {
+      background: #e81123;
+      color: #ffffff;
+    }
+
+    /* Code Editor Viewport */
+    .code-viewport {
+      flex: 1;
+      display: flex;
+      overflow: auto;
+      position: relative;
+      background: #ffffff;
+      font-family: Consolas, 'Courier New', monospace;
+      font-size: 13px;
+      line-height: 19px;
+    }
+
+    /* Left Gutter (Line numbers + Folding) */
+    .editor-gutter {
+      background: #f7f7f7;
+      border-right: 1px solid #d4d4d4;
+      padding: 4px 0;
+      display: flex;
+      flex-direction: column;
+      user-select: none;
+      flex-shrink: 0;
+      min-width: 56px;
+      cursor: pointer;
+    }
+    .gutter-row {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      height: 19px;
+      padding: 0 6px 0 4px;
+      color: #787878;
+      font-size: 12px;
+      gap: 5px;
+    }
+    .fold-icon {
+      width: 9px;
+      height: 9px;
+      border: 1px solid #999;
+      border-radius: 2px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 9px;
+      line-height: 1;
+      color: #555;
+      background: #fff;
+    }
+    .fold-spacer {
+      width: 9px;
+      height: 9px;
+      display: inline-block;
+    }
+
+    /* Code Lines Content */
+    .code-lines {
+      flex: 1;
+      padding: 4px 0;
+      min-width: max-content;
+    }
+    .code-line {
+      height: 19px;
+      padding: 0 12px 0 8px;
+      white-space: pre;
+      cursor: text;
+    }
+    .code-line.active-line {
+      background-color: #e8f2fe;
+    }
+
+    /* Authentic Eclipse Syntax Highlighting Colors */
+    .tok-kw {
+      color: #7f0055;
+      font-weight: bold;
+    }
+    .tok-str {
+      color: #2a00ff;
+    }
+    .tok-com {
+      color: #3f7f5f;
+    }
+    .tok-field {
+      color: #0000c0;
+    }
+    .tok-num {
+      color: #000000;
+    }
+
+    /* Bottom Console View */
+    .console-pane {
+      height: 125px;
+      background: #ffffff;
+      border: 1px solid #a0a0a0;
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+    }
+    .console-pane.hidden-pane {
+      display: none;
+    }
+    .console-body {
+      flex: 1;
+      padding: 6px 10px;
+      font-family: Consolas, 'Courier New', monospace;
+      font-size: 12.5px;
+      overflow-y: auto;
+      white-space: pre-wrap;
+      color: #111;
+    }
+
+    /* Status Bar */
+    .status-bar {
+      height: 22px;
+      background: #f0f0f0;
+      border-top: 1px solid #c0c0c0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 8px;
+      font-size: 11.5px;
+      color: #222;
+      user-select: none;
+    }
+    .status-cells {
+      display: flex;
+      align-items: center;
+      height: 100%;
+    }
+    .status-cell {
+      padding: 0 10px;
+      border-left: 1px solid #cccccc;
+      height: 16px;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+    }
+    .status-cell:hover {
+      background: #e4e4e4;
+    }
+
+    /* Eclipse Quick Outline / Open Resource Modal (Ctrl+O / Ctrl+Shift+T) */
+    .quick-modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: transparent;
+      display: none;
+      align-items: flex-start;
+      justify-content: center;
+      padding-top: 90px;
+      z-index: 50;
+    }
+    .quick-modal-backdrop.open {
+      display: flex;
+    }
+    .quick-modal {
+      width: 420px;
+      background: #fcfcfc;
+      border: 1px solid #7a7a7a;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+      display: flex;
+      flex-direction: column;
+      font-size: 12px;
+    }
+    .quick-input-wrap {
+      padding: 6px;
+      border-bottom: 1px solid #d0d0d0;
+      background: #ffffff;
+    }
+    .quick-input {
+      width: 100%;
+      border: 1px solid #7f9db9;
+      padding: 3px 6px;
+      font-size: 12px;
+      outline: none;
+      font-family: 'Segoe UI', sans-serif;
+    }
+    .quick-list {
+      max-height: 240px;
+      overflow-y: auto;
+      padding: 3px;
+      background: #ffffff;
+    }
+    .quick-item {
+      padding: 3px 6px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+    }
+    .quick-item.active,
+    .quick-item:hover {
+      background: #cce8ff;
+    }
+    .quick-footer {
+      padding: 3px 8px;
+      background: #f0f0f0;
+      border-top: 1px solid #d0d0d0;
+      font-size: 11px;
+      color: #555;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    /* Java File J Badge */
+    .j-icon {
+      width: 14px;
+      height: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: Arial, sans-serif;
+      font-weight: bold;
+      font-size: 10px;
+      color: #1a6334;
+      background: #eef7f0;
+      border: 1px solid #499c54;
+      border-radius: 2px;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Classic Eclipse Top Menu Bar -->
+  <div class="eclipse-menubar">
+    <span>File</span>
+    <span>Edit</span>
+    <span>Source</span>
+    <span>Refactor</span>
+    <span onclick="openQuickOutline()" title="Quick Search (Ctrl+O)">Navigate</span>
+    <span onclick="openQuickOutline()" title="Search Programs (Ctrl+O)">Search</span>
+    <span>Project</span>
+    <span onclick="runSimulatedConsole()" title="Run Active Java Program">Run</span>
+    <span onclick="toggleMaximizeEditor()" title="Toggle Full Editor (Double-click tab)">Window</span>
+    <span>Help</span>
+  </div>
+
+  <!-- Classic Eclipse Toolbar -->
+  <div class="eclipse-toolbar">
+    <!-- New -->
+    <div class="tool-btn" title="New Java Class" onclick="openQuickOutline()">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+        <rect x="2" y="1" width="10" height="13" fill="#fff" stroke="#666"/>
+        <path d="M12 1v4h4" fill="#ccc"/>
+        <path d="M11 9v6M8 12h6" stroke="#d48800" stroke-width="2"/>
+      </svg>
+    </div>
+    <!-- Save (Stealth Copy Trigger) -->
+    <div class="tool-btn" title="Save (Ctrl+S)" onclick="stealthCopyCode()">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+        <rect x="2" y="2" width="12" height="12" fill="#4b6eaf" stroke="#2c4778"/>
+        <rect x="4" y="2" width="7" height="5" fill="#fff"/>
+        <rect x="4" y="9" width="8" height="5" fill="#dcdcdc"/>
+      </svg>
+    </div>
+    <div class="tool-sep"></div>
+    <!-- Run Button -->
+    <div class="tool-btn" title="Run Java Application" onclick="runSimulatedConsole()">
+      <svg width="14" height="14" viewBox="0 0 16 16">
+        <circle cx="8" cy="8" r="6.5" fill="#3c9c45" stroke="#236b2a"/>
+        <polygon points="6.5,4.5 11.5,8 6.5,11.5" fill="#ffffff"/>
+      </svg>
+    </div>
+    <!-- Debug Button -->
+    <div class="tool-btn" title="Debug">
+      <svg width="14" height="14" viewBox="0 0 16 16">
+        <circle cx="8" cy="8.5" r="4" fill="#4c7093"/>
+        <path d="M5 4l2 2M11 4L9 6M3 8h2M11 8h2M4 12l2-1.5M12 12l-2-1.5" stroke="#444" stroke-width="1.2"/>
+      </svg>
+    </div>
+    <div class="tool-sep"></div>
+    <!-- Open Type / Search Programs -->
+    <div class="tool-btn" title="Open Type / Search Program (Ctrl+O)" onclick="openQuickOutline()">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+        <circle cx="6.5" cy="6.5" r="4.5" stroke="#555" stroke-width="1.5" fill="#fff"/>
+        <line x1="10" y1="10" x2="14" y2="14" stroke="#555" stroke-width="2"/>
+      </svg>
+    </div>
+    <!-- Toggle Package Explorer -->
+    <div class="tool-btn" title="Toggle Maximize Editor (Double-click tab)" onclick="toggleMaximizeEditor()">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
+        <rect x="1.5" y="2.5" width="13" height="11" stroke="#555" fill="#fff"/>
+        <line x1="5.5" y1="2.5" x2="5.5" y2="13.5" stroke="#555"/>
+      </svg>
+    </div>
+  </div>
+
+  <!-- Main Eclipse Workbench -->
+  <div class="workbench">
+    <!-- Left Sidebar: Package Explorer -->
+    <div id="packageExplorer" class="sidebar">
+      <div class="part-tabbar">
+        <div class="part-tab">
+          <svg width="12" height="12" viewBox="0 0 16 16">
+            <rect x="1" y="2" width="14" height="12" fill="#e8b668" stroke="#9e6b24"/>
+          </svg>
+          <span>Package Explorer</span>
+          <span class="tab-close" onclick="toggleMaximizeEditor()">×</span>
+        </div>
+      </div>
+      <div class="tree-container">
+        <!-- Project Node -->
+        <div class="tree-row" style="font-weight: 500;">
+          <span>▾</span>
+          <svg width="13" height="13" viewBox="0 0 16 16">
+            <path d="M1 3h6l1.5 2H15v9H1V3z" fill="#6b9cde" stroke="#3c6ca8"/>
+          </svg>
+          <span>Java_Lab</span>
+        </div>
+        <!-- JRE System Library -->
+        <div class="tree-row" style="padding-left: 18px; color: #444;">
+          <span>▸</span>
+          <svg width="12" height="12" viewBox="0 0 16 16">
+            <rect x="2" y="2" width="12" height="12" fill="#b3c7df" stroke="#597699"/>
+          </svg>
+          <span>JRE System Library [JavaSE-17]</span>
+        </div>
+        <!-- src folder -->
+        <div class="tree-row" style="padding-left: 18px;">
+          <span>▾</span>
+          <svg width="13" height="13" viewBox="0 0 16 16">
+            <path d="M1 3h6l1.5 2H15v9H1V3z" fill="#f3d285" stroke="#b58d3d"/>
+          </svg>
+          <span>src</span>
+        </div>
+        <!-- Package Java_Lab -->
+        <div class="tree-row" style="padding-left: 34px;">
+          <span>▾</span>
+          <svg width="13" height="13" viewBox="0 0 16 16">
+            <rect x="2" y="2" width="12" height="12" fill="#c9965b" stroke="#7d5322"/>
+            <line x1="8" y1="2" x2="8" y2="14" stroke="#7d5322"/>
+            <line x1="2" y1="8" x2="14" y2="8" stroke="#7d5322"/>
+          </svg>
+          <span>Java_Lab</span>
+        </div>
+        <!-- Java Files List -->
+        <div id="treeFilesList"></div>
+      </div>
+    </div>
+
+    <!-- Center & Bottom Stack -->
+    <div class="editor-stack">
+      <!-- Main Java Code Editor Pane -->
+      <div class="editor-pane">
+        <!-- Open File Tabs -->
+        <div id="editorTabs" class="editor-tabs"></div>
+
+        <!-- Code Area with Gutter and Syntax-Highlighted Lines -->
+        <div id="codeViewport" class="code-viewport">
+          <div id="editorGutter" class="editor-gutter" title="Click gutter to copy active file"></div>
+          <div id="codeLines" class="code-lines"></div>
+        </div>
+      </div>
+
+      <!-- Bottom Console Pane (Collapsible) -->
+      <div id="consolePane" class="console-pane hidden-pane">
+        <div class="part-tabbar">
+          <div class="part-tab">
+            <svg width="12" height="12" viewBox="0 0 16 16">
+              <rect x="1" y="2" width="14" height="12" fill="#ffffff" stroke="#555"/>
+              <path d="M4 6l3 2.5L4 11" stroke="#333" fill="none" stroke-width="1.4"/>
+            </svg>
+            <span>Console</span>
+            <span class="tab-close" onclick="toggleConsole(false)">×</span>
+          </div>
+          <div style="padding-right: 8px; font-size: 11px; color: #555;" id="consoleHeaderInfo">
+            &lt;terminated&gt; DisplayFiles [Java Application]
+          </div>
+        </div>
+        <div id="consoleOutput" class="console-body"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bottom Eclipse Status Bar with Stealth Copy Controls -->
+  <div class="status-bar">
+    <div style="display: flex; align-items: center; gap: 10px;">
+      <span id="statusMessage" style="color: #333;"></span>
+    </div>
+    <div class="status-cells">
+      <!-- Toggle whether 'package Java_Lab;' is included when copying -->
+      <div class="status-cell" id="pkgModeCell" onclick="togglePackageCopyMode()" title="Click to toggle including 'package Java_Lab;' when copying">
+        Pkg: Java_Lab
+      </div>
+      <!-- Click 'Writable' to silently copy entire Java file to clipboard -->
+      <div class="status-cell" id="writableStatusCell" onclick="stealthCopyCode()" title="Click to copy active code (Alt+C)">
+        Writable
+      </div>
+      <div class="status-cell" onclick="openQuickOutline()" title="Quick Outline / Search Program (Ctrl+O)">
+        Smart Insert
+      </div>
+      <div class="status-cell" id="cursorPosCell" onclick="stealthCopyCode()" title="Line : Column (Click to copy code)">
+        1 : 1
+      </div>
+    </div>
+  </div>
+
+  <!-- Native-Looking Eclipse Quick Outline / Search Dialog (Ctrl+O) -->
+  <div id="quickModalBackdrop" class="quick-modal-backdrop" onclick="handleBackdropClick(event)">
+    <div class="quick-modal">
+      <div class="quick-input-wrap">
+        <input
+          type="text"
+          id="quickSearchInput"
+          class="quick-input"
+          placeholder="Type filter text (e.g. Calculator, Table, Traffic, Phone)..."
+          autocomplete="off"
+        />
+      </div>
+      <div id="quickList" class="quick-list"></div>
+      <div class="quick-footer">
+        <span>Enter: Open File &amp; Copy | Esc: Close</span>
+        <span>Ctrl+O</span>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Complete collection of all 10 Java Lab programs with clean, compilable syntax
+    const JAVA_FILES = [
+      {
+        name: "DisplayFiles.java",
+        consolePreview: `= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\nDisplaying Files from the directory: D:\\Java Programs\n= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = =\n[Core_Java]\n\tDisplayFiles.java\n\tPhone.txt\nTable.txt`,
+        code: `package Java_Lab;
+
+import java.io.File;
+
+public class DisplayFiles 
+{ 
+    public void printFiles(File[] a, int i, int lvl) 
+    { 
+        // base case of the recursion 
+        // i == a.length means the directory has 
+        // no more files. Hence, the recursion has to stop 
+        if (i == a.length) 
+        { 
+            return; 
+        } 
+        // tabs for providing the indentation 
+        // for the files of sub-directory 
+        for (int j = 0; j < lvl; j++) 
+        { 
+            System.out.print("\\t"); 
+        } 
+        // checking if the encountered object is a file or not 
+        if (a[i].isFile()) 
+        { 
+            System.out.println(a[i].getName()); 
+        } 
+        // for sub-directories 
+        else if (a[i].isDirectory()) 
+        { 
+            System.out.println("[" + a[i].getName() + "]"); 
+            // recursion for sub-directories 
+            printFiles(a[i].listFiles(), 0, lvl + 1); 
+        } 
+        // recursively printing files from the directory 
+        // i + 1 means look for the next file 
+        printFiles(a, i + 1, lvl); 
+    } 
+
+    // Main Method 
+    public static void main(String[] argvs) 
+    { 
+        // Providing the full path for the directory 
+        String path = "D:\\\\Java Programs"; 
+        // creating a file object 
+        File f = new File(path); 
+        // creating an object of the class DisplayFiles 
+        DisplayFiles obj = new DisplayFiles(); 
+        if (f.exists() && f.isDirectory()) 
+        { 
+            // array for the files of the directory pointed by f 
+            File a[] = f.listFiles(); 
+            // display statements 
+            System.out.println("= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = ="); 
+            System.out.println("Displaying Files from the directory: " + f); 
+            System.out.println("= = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = = ="); 
+            // Calling the method 
+            obj.printFiles(a, 0, 0); 
+        } 
+    } 
+}`
+      },
+      {
+        name: "DisplayTableAWT.java",
+        consolePreview: `[AWT Frame Launched: "Table Display using AWT" (600x400)]`,
+        code: `package Java_Lab;
+
+import java.awt.*;
+import java.io.*;
+import java.util.*;
+
+public class DisplayTableAWT extends Frame {
+    DisplayTableAWT() {
+        setTitle("Table Display using AWT");
+        setSize(600, 400);
+        setLayout(new GridLayout(4, 4, 10, 10)); // dynamic rows/columns with gaps
+        try {
+            // Open the file
+            File file = new File("D:\\\\Table.txt");
+            Scanner sc = new Scanner(file);
+            // Read each line and split by commas
+            while (sc.hasNextLine()) {
+                String line = sc.nextLine();
+                String[] items = line.split(",");
+                // Create a Label for each cell
+                for (String data : items) {
+                    Label lbl = new Label(data.trim());
+                    lbl.setBackground(Color.LIGHT_GRAY);
+                    add(lbl);
+                }
+            }
+            sc.close();
+        } catch (Exception e) {
+            add(new Label("Error: " + e.getMessage()));
+        }
+        setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        new DisplayTableAWT();
+    }
+}`
+      },
+      {
+        name: "DisplayTableFromFile.java",
+        consolePreview: `[Swing JFrame Launched: "Table Display from File" (600x400)]`,
+        code: `package Java_Lab;
+
+import javax.swing.*;
+import java.awt.*;
+import java.io.*;
+import java.util.*;
+
+public class DisplayTableFromFile extends JFrame {
+    public DisplayTableFromFile() {
+        setTitle("Table Display from File");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(600, 400);
+        setLayout(new BorderLayout());
+
+        // Panel to hold the table content
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(0, 1)); // temporary, will reset after knowing column count
+        JScrollPane scrollPane = new JScrollPane(panel);
+
+        try {
+            // Read the file
+            File file = new File("Table.txt");
+            Scanner sc = new Scanner(file);
+
+            // Read all lines into a list
+            java.util.List<String[]> rows = new ArrayList<>();
+            while (sc.hasNextLine()) {
+                String line = sc.nextLine();
+                String[] columns = line.split(","); // split by comma
+                rows.add(columns);
+            }
+            sc.close();
+
+            // Check if file has content
+            if (rows.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "The file is empty!", "Error", 
+                        JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Determine number of columns from first line
+            int cols = rows.get(0).length;
+
+            // Set grid layout with dynamic rows & columns
+            panel.setLayout(new GridLayout(rows.size(), cols, 5, 5));
+
+            // Add table elements as labels
+            for (int i = 0; i < rows.size(); i++) {
+                for (int j = 0; j < cols; j++) {
+                    JLabel label = new JLabel(rows.get(i)[j].trim(), SwingConstants.CENTER);
+                    label.setOpaque(true);
+                    // Highlight header row
+                    if (i == 0) {
+                        label.setBackground(Color.LIGHT_GRAY);
+                        label.setFont(new Font("Arial", Font.BOLD, 14));
+                    } else {
+                        label.setBackground(Color.WHITE);
+                        label.setFont(new Font("Arial", Font.PLAIN, 13));
+                    }
+                    label.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+                    panel.add(label);
+                }
+            }
+        } catch (FileNotFoundException e) {
+            JOptionPane.showMessageDialog(this, "File not found!", "Error", 
+                    JOptionPane.ERROR_MESSAGE);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error reading file: " + e.getMessage(), 
+                    "Error", JOptionPane.ERROR_MESSAGE);
+        }
+
+        add(scrollPane, BorderLayout.CENTER);
+        setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        new DisplayTableFromFile();
+    }
+}`
+      },
+      {
+        name: "IntegerDivision.java",
+        consolePreview: `[Swing JFrame Launched: "Integer Division" (350x200)]`,
+        code: `package Java_Lab;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class IntegerDivision extends JFrame implements ActionListener {
+    // GUI Components
+    JTextField num1Field, num2Field, resultField;
+    JButton divideButton;
+    JLabel num1Label, num2Label, resultLabel;
+
+    public IntegerDivision() {
+        // Frame title
+        setTitle("Integer Division");
+        setLayout(new GridLayout(4, 2, 10, 10));
+
+        // Create labels and text fields
+        num1Label = new JLabel("Num1:");
+        num2Label = new JLabel("Num2:");
+        resultLabel = new JLabel("Result:");
+
+        num1Field = new JTextField();
+        num2Field = new JTextField();
+        resultField = new JTextField();
+        resultField.setEditable(false); // result should not be edited
+
+        divideButton = new JButton("Divide");
+        divideButton.addActionListener(this);
+
+        // Add components to the frame
+        add(num1Label);
+        add(num1Field);
+        add(num2Label);
+        add(num2Field);
+        add(resultLabel);
+        add(resultField);
+        add(new JLabel("")); // empty label for layout spacing
+        add(divideButton);
+
+        // Set frame properties
+        setSize(350, 200);
+        setVisible(true);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    // Handle button click event
+    public void actionPerformed(ActionEvent e) {
+        try {
+            // Read input values
+            int num1 = Integer.parseInt(num1Field.getText());
+            int num2 = Integer.parseInt(num2Field.getText());
+
+            // Perform division
+            int result = num1 / num2;
+
+            // Display result
+            resultField.setText(String.valueOf(result));
+        } catch (NumberFormatException ex) {
+            // If input is not an integer
+            JOptionPane.showMessageDialog(this,
+                    "Please enter valid integers!",
+                    "Number Format Error",
+                    JOptionPane.ERROR_MESSAGE);
+        } catch (ArithmeticException ex) {
+            // If division by zero occurs
+            JOptionPane.showMessageDialog(this,
+                    "Cannot divide by zero!",
+                    "Arithmetic Error",
+                    JOptionPane.ERROR_MESSAGE);
+        } catch (Exception ex) {
+            // Catch-all for any other unexpected exception
+            JOptionPane.showMessageDialog(this,
+                    "An unexpected error occurred: " + ex.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    // Main method
+    public static void main(String[] args) {
+        new IntegerDivision();
+    }
+}`
+      },
+      {
+        name: "MouseListenerDemo.java",
+        consolePreview: `[AWT Frame Launched: myframe10 (500x500) - Listening for MouseEvents]`,
+        code: `package Java_Lab;
+
+import java.awt.*; 
+import java.awt.event.*; 
+
+class myframe10 extends Frame implements MouseListener 
+{
+    String[] msg = new String[5]; 
+
+    myframe10() 
+    { 
+        this.setSize(500, 500); 
+        this.setVisible(true); 
+        this.setBackground(Color.blue); 
+        this.addMouseListener(this); 
+    } 
+
+    public void mouseClicked(MouseEvent e) 
+    { 
+        msg[0] = "mouse clicked.................. (" + e.getX() + "," + e.getY() + ")"; 
+        repaint(); 
+    } 
+
+    public void mousePressed(MouseEvent e) 
+    { 
+        msg[1] = "mouse pressed. ....(" + e.getX() + "," + e.getY() + ")"; 
+        repaint(); 
+    } 
+
+    public void mouseReleased(MouseEvent e) 
+    { 
+        msg[2] = "mouse released .... (" + e.getX() + "," + e.getY() + ")"; 
+        repaint(); 
+    } 
+
+    public void mouseEntered(MouseEvent e) 
+    { 
+        msg[3] = "mouse entered. ... (" + e.getX() + "," + e.getY() + ")"; 
+        repaint(); 
+    } 
+
+    public void mouseExited(MouseEvent e) 
+    { 
+        msg[4] = "mouse exited .... (" + e.getX() + "," + e.getY() + ")"; 
+        repaint(); 
+    } 
+
+    public void paint(Graphics g) 
+    { 
+        int X = 50; 
+        int Y = 100; 
+        for (int i = 0; i < msg.length; i++) 
+        {
+            if (msg[i] != null) 
+            { 
+                Y = Y + 50; 
+                g.drawString(msg[i], X, Y); 
+            }
+        }
+    } 
+}
+
+public class MouseListenerDemo 
+{ 
+    public static void main(String[] args) 
+    { 
+        myframe10 f = new myframe10(); 
+    } 
+}`
+      },
+      {
+        name: "MyApplet.java",
+        consolePreview: `[Applet Viewer: MyApplet.class - "Hello, this is my first Applet!"]`,
+        code: `package Java_Lab;
+
+/*
+<applet code="MyApplet" width=900 height=500>
+</applet>
+*/
+import java.applet.Applet;
+import java.awt.Graphics;
+
+// <applet code="MyApplet.class" width="300" height="200"></applet>
+public class MyApplet extends Applet {
+    public void paint(Graphics g) {
+        g.drawString("Hello, this is my first Applet!", 50, 100);
+    }
+}`
+      },
+      {
+        name: "PhoneDirectory.java",
+        consolePreview: `Enter a name or phone number to search: Rahul\nPhone Number: 9876543210`,
+        code: `package Java_Lab;
+
+import java.io.*;
+import java.util.*;
+
+public class PhoneDirectory {
+    public static void main(String[] args) {
+        // Hash tables for quick lookup in both directions
+        Hashtable<String, String> nameToPhone = new Hashtable<>();
+        Hashtable<String, String> phoneToName = new Hashtable<>();
+
+        try {
+            // Open the file
+            BufferedReader br = new BufferedReader(
+                    new FileReader("D:\\\\Java Programs\\\\Core_Java\\\\src\\\\Phone.txt"));
+            String line;
+            // Read each line
+            while ((line = br.readLine()) != null) {
+                // Split by tab (\\t)
+                String[] parts = line.split("\\t");
+                if (parts.length == 2) {
+                    String name = parts[0].trim();
+                    String phone = parts[1].trim();
+                    // Store in both hash tables
+                    nameToPhone.put(name, phone);
+                    phoneToName.put(phone, name);
+                }
+            }
+            br.close();
+
+            // Take user input
+            Scanner sc = new Scanner(System.in);
+            System.out.print("Enter a name or phone number to search: ");
+            String input = sc.nextLine().trim();
+
+            // Lookup logic
+            if (nameToPhone.containsKey(input)) {
+                System.out.println("Phone Number: " + nameToPhone.get(input));
+            } else if (phoneToName.containsKey(input)) {
+                System.out.println("Name: " + phoneToName.get(input));
+            } else {
+                System.out.println("No record found for: " + input);
+            }
+            sc.close();
+        } catch (FileNotFoundException e) {
+            System.out.println("Error: File 'PhoneDirectory.txt' not found.");
+        } catch (IOException e) {
+            System.out.println("Error reading from file.");
+        }
+    }
+}`
+      },
+      {
+        name: "SimpleCalculator.java",
+        consolePreview: `[Swing JFrame Launched: "Simple Calculator" (300x300)]`,
+        code: `package Java_Lab;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class SimpleCalculator extends JFrame implements ActionListener {
+    JTextField display;
+    double num1, num2, result;
+    char operator;
+
+    public SimpleCalculator() {
+        // Title
+        setTitle("Simple Calculator");
+
+        // Text field at top
+        display = new JTextField();
+        display.setEditable(false);
+        add(display, BorderLayout.NORTH);
+
+        // Panel for buttons
+        JPanel panel = new JPanel();
+        panel.setLayout(new GridLayout(4, 4, 5, 5)); // 4x4 grid
+
+        // Button labels
+        String buttons[] = {
+            "7", "8", "9", "+",
+            "4", "5", "6", "-",
+            "1", "2", "3", "*",
+            "0", "%", "=", "C"
+        };
+
+        // Create and add buttons
+        for (String text : buttons) {
+            JButton b = new JButton(text);
+            b.addActionListener(this);
+            panel.add(b);
+        }
+
+        add(panel, BorderLayout.CENTER);
+        setSize(300, 300);
+        setVisible(true);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        String command = e.getActionCommand();
+
+        // If a digit is pressed
+        if (command.charAt(0) >= '0' && command.charAt(0) <= '9') {
+            display.setText(display.getText() + command);
+        }
+        // If an operator is pressed
+        else if (command.equals("+") || command.equals("-") || 
+                 command.equals("*") || command.equals("%")) {
+            try {
+                num1 = Double.parseDouble(display.getText());
+                operator = command.charAt(0);
+                display.setText("");
+            } catch (Exception ex) {
+                display.setText("Error");
+            }
+        }
+        // If equals (=) is pressed
+        else if (command.equals("=")) {
+            try {
+                num2 = Double.parseDouble(display.getText());
+                switch (operator) {
+                    case '+': result = num1 + num2; break;
+                    case '-': result = num1 - num2; break;
+                    case '*': result = num1 * num2; break;
+                    case '%': 
+                        if (num2 == 0)
+                            throw new ArithmeticException("Divide by zero");
+                        result = num1 % num2; 
+                        break;
+                }
+                display.setText(String.valueOf(result));
+            } catch (ArithmeticException ex) {
+                display.setText("Cannot divide by zero");
+            } catch (Exception ex) {
+                display.setText("Error");
+            }
+        }
+        // Clear button
+        else if (command.equals("C")) {
+            display.setText("");
+            num1 = num2 = result = 0;
+            operator = '\\0';
+        }
+    }
+
+    public static void main(String[] args) {
+        new SimpleCalculator();
+    }
+}`
+      },
+      {
+        name: "TestApplet.java",
+        consolePreview: `init method begins\ninit method beginsStart method invoked\ninit method beginsStart method invokedpaint method-->WELCOME TO VBIT`,
+        code: `package Java_Lab;
+
+/*
+<applet code="D:\\Java Programs\\Core_Java\\src\\Applet1\\TestApplet.class" 
+width=900 height=500>
+</applet>
+*/
+import java.applet.Applet; 
+import java.awt.Graphics;
+
+public class TestApplet extends Applet
+{
+    String msg = " "; 
+
+    public void init()
+    {
+        msg = "init method begins";
+        System.out.println(msg);
+    }
+
+    public void start()
+    {
+        msg += "Start method invoked";
+        System.out.println(msg);
+    }
+
+    public void paint(Graphics g)
+    {
+        System.out.println(msg);
+        msg += "paint method-->WELCOME TO VBIT"; 
+        g.drawString(msg, 50, 100);
+        System.out.println(msg);
+    }
+}`
+      },
+      {
+        name: "TrafficLightSimulator.java",
+        consolePreview: `[Swing JFrame Launched: "Traffic Light Simulator" (400x300)]`,
+        code: `package Java_Lab;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class TrafficLightSimulator extends JFrame implements ActionListener {
+    // Radio buttons for Red, Yellow, Green
+    JRadioButton redButton, yellowButton, greenButton;
+    ButtonGroup group;
+    // Label to display message
+    JLabel messageLabel;
+
+    public TrafficLightSimulator() {
+        setTitle("Traffic Light Simulator");
+        setSize(400, 300);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new FlowLayout());
+
+        // Create radio buttons
+        redButton = new JRadioButton("Red");
+        yellowButton = new JRadioButton("Yellow");
+        greenButton = new JRadioButton("Green");
+
+        // Group buttons (only one can be selected)
+        group = new ButtonGroup();
+        group.add(redButton);
+        group.add(yellowButton);
+        group.add(greenButton);
+
+        // Add action listeners
+        redButton.addActionListener(this);
+        yellowButton.addActionListener(this);
+        greenButton.addActionListener(this);
+
+        // Create label for message
+        messageLabel = new JLabel(""); // initially no message
+        messageLabel.setFont(new Font("Arial", Font.BOLD, 20));
+
+        // Add components to the frame
+        add(messageLabel);
+        add(redButton);
+        add(yellowButton);
+        add(greenButton);
+
+        setVisible(true);
+    }
+
+    // Handle button clicks
+    public void actionPerformed(ActionEvent e) {
+        if (redButton.isSelected()) {
+            messageLabel.setText("STOP");
+            messageLabel.setForeground(Color.RED);
+        } else if (yellowButton.isSelected()) {
+            messageLabel.setText("READY");
+            messageLabel.setForeground(Color.ORANGE);
+        } else if (greenButton.isSelected()) {
+            messageLabel.setText("GO");
+            messageLabel.setForeground(Color.GREEN);
+        }
+    }
+
+    // Main method
+    public static void main(String[] args) {
+        new TrafficLightSimulator();
+    }
+}`
+      }
+    ];
+
+    // State
+    let openTabs = JAVA_FILES.map((_, idx) => idx); // All 10 files open in tabs
+    let activeFileIndex = 0;
+    let activeLineNumber = 1;
+    let includePackageLine = true;
+    let quickSelectedIdx = 0;
+    let filteredQuickItems = [...JAVA_FILES];
+
+    // Eclipse Java Keywords
+    const JAVA_KEYWORDS = new Set([
+      "package", "import", "public", "private", "protected", "class", "interface",
+      "extends", "implements", "void", "int", "double", "float", "char", "boolean",
+      "long", "short", "byte", "if", "else", "for", "while", "do", "switch", "case",
+      "break", "continue", "return", "try", "catch", "finally", "throw", "throws",
+      "new", "this", "super", "static", "final", "null", "true", "false"
+    ]);
+
+    function escapeHtml(str) {
+      return str
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+    }
+
+    // Syntax Highlighter for a single line of Java code
+    function highlightJavaLine(line, inBlockCommentState) {
+      if (inBlockCommentState.active) {
+        const endIdx = line.indexOf("*/");
+        if (endIdx === -1) {
+          return `<span class="tok-com">${escapeHtml(line)}</span>`;
+        } else {
+          const before = line.slice(0, endIdx + 2);
+          const rest = line.slice(endIdx + 2);
+          inBlockCommentState.active = false;
+          return `<span class="tok-com">${escapeHtml(before)}</span>` + highlightJavaLine(rest, inBlockCommentState);
+        }
+      }
+
+      // Check for block comment start
+      const blockStart = line.indexOf("/*");
+      const lineCommentStart = line.indexOf("//");
+
+      if (blockStart !== -1 && (lineCommentStart === -1 || blockStart < lineCommentStart)) {
+        const before = line.slice(0, blockStart);
+        const after = line.slice(blockStart);
+        inBlockCommentState.active = true;
+        return highlightCodeTokens(before) + highlightJavaLine(after, inBlockCommentState);
+      }
+
+      if (lineCommentStart !== -1) {
+        // Make sure // isn't inside quotes
+        let inQuotes = false;
+        let realCommentIdx = -1;
+        for (let i = 0; i < line.length; i++) {
+          if (line[i] === '"' && line[i - 1] !== '\\') inQuotes = !inQuotes;
+          if (!inQuotes && line[i] === '/' && line[i + 1] === '/') {
+            realCommentIdx = i;
+            break;
+          }
+        }
+        if (realCommentIdx !== -1) {
+          const codePart = line.slice(0, realCommentIdx);
+          const comPart = line.slice(realCommentIdx);
+          return highlightCodeTokens(codePart) + `<span class="tok-com">${escapeHtml(comPart)}</span>`;
+        }
+      }
+
+      return highlightCodeTokens(line);
+    }
+
+    function highlightCodeTokens(text) {
+      // Tokenize strings, chars, identifiers, and symbols
+      const tokenRegex = /("(?:\\.|[^"\\])*")|('(?:\\.|[^'\\])*')|\b([A-Za-z_][A-Za-z0-9_]*)\b/g;
+      let result = "";
+      let lastIndex = 0;
+      let match;
+
+      while ((match = tokenRegex.exec(text)) !== null) {
+        result += escapeHtml(text.slice(lastIndex, match.index));
+        const [fullMatch, strLiteral, charLiteral, identifier] = match;
+
+        if (strLiteral || charLiteral) {
+          result += `<span class="tok-str">${escapeHtml(fullMatch)}</span>`;
+        } else if (identifier) {
+          if (JAVA_KEYWORDS.has(identifier)) {
+            result += `<span class="tok-kw">${escapeHtml(identifier)}</span>`;
+          } else {
+            result += escapeHtml(identifier);
+          }
+        }
+        lastIndex = tokenRegex.lastIndex;
+      }
+
+      result += escapeHtml(text.slice(lastIndex));
+      return result;
+    }
+
+    // Render Left Package Explorer File Tree
+    function renderPackageExplorer() {
+      const container = document.getElementById("treeFilesList");
+      container.innerHTML = "";
+
+      JAVA_FILES.forEach((file, index) => {
+        const row = document.createElement("div");
+        row.className = "tree-row" + (index === activeFileIndex ? " selected" : "");
+        row.style.paddingLeft = "50px";
+        row.innerHTML = `
+          <span class="j-icon">J</span>
+          <span>${file.name}</span>
+        `;
+        row.onclick = () => selectFile(index);
+        row.ondblclick = () => {
+          selectFile(index);
+          stealthCopyCode();
+        };
+        container.appendChild(row);
+      });
+    }
+
+    // Render Top Editor Tabs
+    function renderEditorTabs() {
+      const tabBar = document.getElementById("editorTabs");
+      tabBar.innerHTML = "";
+
+      openTabs.forEach((fileIdx) => {
+        const file = JAVA_FILES[fileIdx];
+        const tab = document.createElement("div");
+        tab.className = "file-tab" + (fileIdx === activeFileIndex ? " active" : "");
+        tab.title = `Java_Lab/src/Java_Lab/${file.name} (Double-click to maximize editor)`;
+        tab.innerHTML = `
+          <span class="j-icon">J</span>
+          <span>${file.name}</span>
+          <span class="tab-close" title="Close">×</span>
+        `;
+
+        tab.onclick = (e) => {
+          if (e.target.classList.contains("tab-close")) {
+            closeTab(fileIdx, e);
+          } else {
+            selectFile(fileIdx);
+          }
+        };
+
+        // Real Eclipse behavior: Double-clicking a tab maximizes/restores the editor pane
+        tab.ondblclick = () => toggleMaximizeEditor();
+
+        tabBar.appendChild(tab);
+      });
+    }
+
+    // Render Code Editor Content & Gutter
+    function renderEditorCode() {
+      const file = JAVA_FILES[activeFileIndex];
+      document.title = `workspace - Java_Lab/src/Java_Lab/${file.name} - Eclipse IDE`;
+
+      const rawCode = includePackageLine
+        ? file.code
+        : file.code.replace(/^package\s+Java_Lab;\s*\n+/, "");
+
+      const lines = rawCode.split("\n");
+      const gutterEl = document.getElementById("editorGutter");
+      const codeLinesEl = document.getElementById("codeLines");
+
+      gutterEl.innerHTML = "";
+      codeLinesEl.innerHTML = "";
+
+      const blockState = { active: false };
+
+      lines.forEach((lineText, idx) => {
+        const lineNum = idx + 1;
+        const trimmed = lineText.trim();
+        const isFoldable =
+          trimmed.startsWith("public class") ||
+          trimmed.startsWith("class ") ||
+          trimmed.startsWith("public void") ||
+          trimmed.startsWith("public static void") ||
+          trimmed.startsWith("/*");
+
+        // Gutter Row
+        const gRow = document.createElement("div");
+        gRow.className = "gutter-row";
+        gRow.innerHTML = `
+          ${isFoldable ? '<span class="fold-icon">-</span>' : '<span class="fold-spacer"></span>'}
+          <span>${lineNum}</span>
+        `;
+        gRow.onclick = () => stealthCopyCode();
+        gutterEl.appendChild(gRow);
+
+        // Code Row
+        const cRow = document.createElement("div");
+        cRow.className = "code-line" + (lineNum === activeLineNumber ? " active-line" : "");
+        cRow.innerHTML = highlightJavaLine(lineText, blockState) || " ";
+        cRow.onclick = () => {
+          activeLineNumber = lineNum;
+          document.querySelectorAll(".code-line").forEach((el, i) => {
+            el.classList.toggle("active-line", i + 1 === activeLineNumber);
+          });
+          document.getElementById("cursorPosCell").textContent = `${lineNum} : ${Math.min(lineText.length + 1, 24)}`;
+        };
+        codeLinesEl.appendChild(cRow);
+      });
+
+      document.getElementById("cursorPosCell").textContent = `${activeLineNumber} : 1`;
+    }
+
+    function selectFile(index) {
+      activeFileIndex = index;
+      activeLineNumber = 1;
+      if (!openTabs.includes(index)) {
+        openTabs.push(index);
+      }
+      renderPackageExplorer();
+      renderEditorTabs();
+      renderEditorCode();
+    }
+
+    function closeTab(fileIdx, event) {
+      event.stopPropagation();
+      if (openTabs.length <= 1) return; // Keep at least 1 tab open
+      openTabs = openTabs.filter((idx) => idx !== fileIdx);
+      if (activeFileIndex === fileIdx) {
+        activeFileIndex = openTabs[0];
+      }
+      renderPackageExplorer();
+      renderEditorTabs();
+      renderEditorCode();
+    }
+
+    // Stealth Direct Copy to Clipboard
+    function stealthCopyCode() {
+      const file = JAVA_FILES[activeFileIndex];
+      const textToCopy = includePackageLine
+        ? file.code
+        : file.code.replace(/^package\s+Java_Lab;\s*\n+/, "");
+
+      const textarea = document.createElement("textarea");
+      textarea.value = textToCopy;
+      textarea.style.position = "fixed";
+      textarea.style.opacity = "0";
+      document.body.appendChild(textarea);
+      textarea.select();
+      try {
+        document.execCommand("copy");
+      } catch (err) {}
+      document.body.removeChild(textarea);
+
+      // Subtle Eclipse-style status bar feedback (no obvious popups)
+      const writableCell = document.getElementById("writableStatusCell");
+      const statusMsg = document.getElementById("statusMessage");
+      writableCell.textContent = "Writable •";
+      statusMsg.textContent = `Built ${file.name}`;
+      setTimeout(() => {
+        writableCell.textContent = "Writable";
+        statusMsg.textContent = "";
+      }, 1200);
+    }
+
+    // Toggle whether 'package Java_Lab;' is included in the editor & copy
+    function togglePackageCopyMode() {
+      includePackageLine = !includePackageLine;
+      const cell = document.getElementById("pkgModeCell");
+      cell.textContent = includePackageLine ? "Pkg: Java_Lab" : "Pkg: (default)";
+      renderEditorCode();
+      stealthCopyCode();
+    }
+
+    // Toggle Maximize Editor (Hide/Show Package Explorer & Console)
+    function toggleMaximizeEditor() {
+      const explorer = document.getElementById("packageExplorer");
+      const consolePane = document.getElementById("consolePane");
+      const isHidden = explorer.classList.toggle("hidden-pane");
+      if (isHidden) {
+        consolePane.classList.add("hidden-pane");
+      }
+    }
+
+    // Simulated Console Output
+    function toggleConsole(show) {
+      const consolePane = document.getElementById("consolePane");
+      if (show) {
+        consolePane.classList.remove("hidden-pane");
+      } else {
+        consolePane.classList.add("hidden-pane");
+      }
+    }
+
+    function runSimulatedConsole() {
+      const file = JAVA_FILES[activeFileIndex];
+      const className = file.name.replace(".java", "");
+      document.getElementById("consoleHeaderInfo").innerHTML =
+        `&lt;terminated&gt; ${className} [Java Application] C:\\Program Files\\Java\\jdk-17\\bin\\javaw.exe`;
+      document.getElementById("consoleOutput").textContent = file.consolePreview;
+      toggleConsole(true);
+    }
+
+    // Quick Outline / Search Modal (Ctrl+O or Ctrl+Shift+T)
+    function openQuickOutline() {
+      const backdrop = document.getElementById("quickModalBackdrop");
+      const input = document.getElementById("quickSearchInput");
+      backdrop.classList.add("open");
+      input.value = "";
+      quickSelectedIdx = 0;
+      filterQuickList("");
+      setTimeout(() => input.focus(), 20);
+    }
+
+    function closeQuickOutline() {
+      document.getElementById("quickModalBackdrop").classList.remove("open");
+    }
+
+    function handleBackdropClick(e) {
+      if (e.target.id === "quickModalBackdrop") {
+        closeQuickOutline();
+      }
+    }
+
+    function filterQuickList(query) {
+      const q = query.trim().toLowerCase();
+      filteredQuickItems = JAVA_FILES.map((file, index) => ({ ...file, index })).filter(
+        (item) => item.name.toLowerCase().includes(q) || item.code.toLowerCase().includes(q)
+      );
+      if (quickSelectedIdx >= filteredQuickItems.length) {
+        quickSelectedIdx = 0;
+      }
+      renderQuickList();
+    }
+
+    function renderQuickList() {
+      const listEl = document.getElementById("quickList");
+      listEl.innerHTML = "";
+
+      if (filteredQuickItems.length === 0) {
+        listEl.innerHTML = `<div style="padding: 6px; color: #777;">No matching types found</div>`;
+        return;
+      }
+
+      filteredQuickItems.forEach((item, idx) => {
+        const row = document.createElement("div");
+        row.className = "quick-item" + (idx === quickSelectedIdx ? " active" : "");
+        row.innerHTML = `
+          <div style="display:flex; align-items:center; gap:6px;">
+            <span class="j-icon">J</span>
+            <span>${item.name.replace(".java", "")} - <span style="color:#666;">Java_Lab</span></span>
+          </div>
+          <span style="color:#888; font-size:11px;">${item.name}</span>
+        `;
+        row.onclick = () => {
+          selectFile(item.index);
+          stealthCopyCode();
+          closeQuickOutline();
+        };
+        listEl.appendChild(row);
+      });
+    }
+
+    // Keyboard Shortcuts
+    window.addEventListener("keydown", (e) => {
+      const modalOpen = document.getElementById("quickModalBackdrop").classList.contains("open");
+
+      // Ctrl+O or Ctrl+Shift+T to open Quick Search
+      if ((e.ctrlKey && e.key.toLowerCase() === "o") || (e.ctrlKey && e.shiftKey && e.key.toLowerCase() === "t")) {
+        e.preventDefault();
+        if (modalOpen) closeQuickOutline();
+        else openQuickOutline();
+        return;
+      }
+
+      // Ctrl+S or Alt+C to stealth copy current file
+      if ((e.ctrlKey && e.key.toLowerCase() === "s") || (e.altKey && e.key.toLowerCase() === "c")) {
+        e.preventDefault();
+        stealthCopyCode();
+        return;
+      }
+
+      // Ctrl+M to maximize/restore editor pane (authentic Eclipse shortcut!)
+      if (e.ctrlKey && e.key.toLowerCase() === "m") {
+        e.preventDefault();
+        toggleMaximizeEditor();
+        return;
+      }
+
+      if (modalOpen) {
+        if (e.key === "Escape") {
+          e.preventDefault();
+          closeQuickOutline();
+        } else if (e.key === "ArrowDown") {
+          e.preventDefault();
+          if (filteredQuickItems.length > 0) {
+            quickSelectedIdx = (quickSelectedIdx + 1) % filteredQuickItems.length;
+            renderQuickList();
+          }
+        } else if (e.key === "ArrowUp") {
+          e.preventDefault();
+          if (filteredQuickItems.length > 0) {
+            quickSelectedIdx = (quickSelectedIdx - 1 + filteredQuickItems.length) % filteredQuickItems.length;
+            renderQuickList();
+          }
+        } else if (e.key === "Enter") {
+          e.preventDefault();
+          if (filteredQuickItems[quickSelectedIdx]) {
+            selectFile(filteredQuickItems[quickSelectedIdx].index);
+            stealthCopyCode();
+            closeQuickOutline();
+          }
+        }
+      }
+    });
+
+    document.getElementById("quickSearchInput").addEventListener("input", (e) => {
+      quickSelectedIdx = 0;
+      filterQuickList(e.target.value);
+    });
+
+    // Initialize Workspace on Load
+    window.onload = () => {
+      renderPackageExplorer();
+      renderEditorTabs();
+      renderEditorCode();
+    };
+  </script>
+</body>
+</html>
